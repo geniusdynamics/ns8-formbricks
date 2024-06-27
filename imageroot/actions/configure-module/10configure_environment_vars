@@ -34,9 +34,8 @@ SMTP_PORT=smtp_settings['port']
 SMTP_USERNAME=smtp_settings['username']
 # OPTIONAL: Defines the password to use with the SMTP server.
 SMTP_PASSWORD=smtp_settings['password']
-SMTP_FROM_NAME=f'"From Bricks" <{smtp_settings["username"]}>'
 # REQUIRED: Defines the email address to use as the from address.
-SMTP_ENCRYPTION=smtp_settings['tls_verify']
+SMTP_ENCRYPTION='1' if smtp_settings['tls_verify'] else '0'
 
 bricks = {
     'WEBAPP_URL': WEBAPP_URL,
@@ -48,7 +47,7 @@ bricks = {
     'SMTP_PORT': SMTP_PORT,
     'SMTP_USER': SMTP_USERNAME,
     'SMTP_PASSWORD': SMTP_PASSWORD,
-    'MAIL_FROM': SMTP_FROM_NAME,
+    'MAIL_FROM': SMTP_USERNAME,
     'SMTP_SECURE_ENABLED': SMTP_ENCRYPTION
 }
 agent.write_envfile("bricks.env", bricks)
