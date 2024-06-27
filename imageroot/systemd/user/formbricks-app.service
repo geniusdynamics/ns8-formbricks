@@ -25,7 +25,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/formbricks-app.pid \
     --volume ./config:/tmp:Z \
     --env=NGINX_* \
     --env 'CONFIG_DATABASE_URI="postgresql://postgres:Nethesis,1234@127.0.0.1:5432/formbricks"' \
-    ${NGINX_IMAGE}
+    ${FORMBRICKS_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/formbricks-app.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP formbricks-app
 SyslogIdentifier=%u
