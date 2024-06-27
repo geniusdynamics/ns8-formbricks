@@ -48,7 +48,9 @@ bricks = {
     'SMTP_USER': SMTP_USERNAME,
     'SMTP_PASSWORD': SMTP_PASSWORD,
     'MAIL_FROM': SMTP_USERNAME,
-    'SMTP_SECURE_ENABLED': SMTP_ENCRYPTION
+    'SMTP_SECURE_ENABLED': SMTP_ENCRYPTION,
+    "EMAIL_VERIFICATION_DISABLED": "1",
+    "SIGNUP_DISABLED": "0",
 }
 agent.write_envfile("bricks.env", bricks)
 # just before starting systemd unit
