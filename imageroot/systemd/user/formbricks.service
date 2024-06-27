@@ -10,8 +10,8 @@
 
 [Unit]
 Description=Podman formbricks.service
-Requires=postgresql-app.service formbricks-app.service
-Before=postgresql-app.service formbricks-app.service
+Requires=postgresql-app.service formbricks-app.service formbricks-redis.service
+Before=postgresql-app.service formbricks-app.service formbricks-redis.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

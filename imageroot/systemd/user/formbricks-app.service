@@ -6,7 +6,7 @@
 [Unit]
 Description=Podman  formbricks-app.service
 BindsTo=formbricks.service
-After=formbricks.service postgresql-app.service
+After=formbricks.service postgresql-app.service formbricks-redis.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -25,6 +25,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/formbricks-app.pid \
     --volume formbricks-app:/home/nextjs/apps/web/uploads/:Z \
     --env-file=%S/state/bricks.env \
     --env DATABASE_URL="postgresql://postgres:Nethesis1234@127.0.0.1:5432/formbricks?schema=public" \
+    --env REDIS_URL="redis://localhost:6379" \
     ${FORMBRICKS_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/formbricks-app.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP formbricks-app
