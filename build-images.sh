@@ -14,7 +14,7 @@ images=()
 repobase="${REPOBASE:-ghcr.io/geniusdynamics}"
 # Configure the image name
 reponame="formbricks"
-APP_VERSION="2.3.0"
+APP_VERSION="2.3.1"
 
 # Create a new empty container image
 container=$(buildah from scratch)
