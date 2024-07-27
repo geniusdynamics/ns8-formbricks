@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+import json
+import sys
+import agent
+import secrets
+import os
+
+# Try to parse the stdin as JSON.
+
+
+data = json.load(sys.stdin)
+#This is specific to you module, so you need to change it accordingly.
+
+def generate_random_password(length):
+    # Generate random bytes and convert them to a hexadecimal string
+    random_bytes = os.urandom(length)
+    password = random_bytes.hex()
+    return password[:length]
+
+# DB Config
+POSTGRES_DB = data.get("POSTGRES_DB","formbricks")
+POSTGRES_USER = data.get("POSTGRES_USER","formbricks")
+POSTGRES_PASSWORD = generate_random_password(16)
+
+db_config = {
+    "POSTGRES_DATABASE": POSTGRES_DB,
+    "POSTGRES_USER": POSTGRES_USER,
+    "POSTGRES_PASSWORD": POSTGRES_PASSWORD,
+}
+agent.write_envfile('database.env', db_config)
+
+secret = secrets.token_hex(32)
+
+ENCRYPTION_KEY=secret
+NEXTAUTH_SECRET =secret
+CRON_SECRET=secret
+DATABASE_URL=f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@postgresql-app:5432/{POSTGRES_DB}?schema=public'
+REDIS_URL = 'redis://redis-app:6379/0'
+
+bricks = {
+    'ENCRYPTION_KEY': ENCRYPTION_KEY,
+    'NEXTAUTH_SECRET': NEXTAUTH_SECRET,
+    'CRON_SECRET': CRON_SECRET,
+    "DATABASE_URL": DATABASE_URL,
+    "REDIS_URL": REDIS_URL,
+
+}
+agent.write_envfile("bricks-db.env", bricks)
+# just before starting systemd unit
+#agent.dump_env()
