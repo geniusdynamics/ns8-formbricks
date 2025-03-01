@@ -53,4 +53,4 @@ bricks = {
 }
 agent.write_envfile("bricks-db.env", bricks)
 # just before starting systemd unit
-#agent.dump_env()
+agent.dump_env()
