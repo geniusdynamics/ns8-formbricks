@@ -15,7 +15,7 @@ repobase="${REPOBASE:-ghcr.io/geniusdynamics}"
 # Configure the image name
 reponame="formbricks"
 
-APP_VERSION="3.15.0"
+APP_VERSION="v3.15.0"
 
 # Create a new empty container image
 container=$(buildah from scratch)
@@ -47,7 +47,7 @@ buildah config --entrypoint=/ \
 	--label="org.nethserver.authorizations=traefik@node:routeadm" \
 	--label="org.nethserver.tcp-ports-demand=1" \
 	--label="org.nethserver.rootfull=0" \
-	--label="org.nethserver.images=docker.io/pgvector/pgvector:pg17 docker.io/formbricks/formbricks:${APP_VERSION} docker.io/library/redis:7" \
+	--label="org.nethserver.images=docker.io/pgvector/pgvector:pg17 ghcr.io/formbricks/formbricks:${APP_VERSION} docker.io/library/redis:7" \
 	"${container}"
 
 # Commit the image
