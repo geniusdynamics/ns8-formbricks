@@ -37,15 +37,20 @@ SMTP_ENCRYPTION='1' if smtp_settings['tls_verify'] else '0'
 bricks = {
     'WEBAPP_URL': WEBAPP_URL,
     'NEXTAUTH_URL': NEXTAUTH_URL,
-    'SMTP_HOST': SMTP_HOST,
-    'SMTP_PORT': SMTP_PORT,
-    'SMTP_USER': SMTP_USERNAME,
-    'SMTP_PASSWORD': SMTP_PASSWORD,
-    'MAIL_FROM': SMTP_USERNAME,
-    'SMTP_SECURE_ENABLED': SMTP_ENCRYPTION,
     "EMAIL_VERIFICATION_DISABLED": "1",
     "SIGNUP_DISABLED": "0",
 }
+# Formbricks rejects empty SMTP settings at startup: set them only when the
+# cluster smarthost is configured
+if smtp_settings.get('enabled') and SMTP_HOST:
+    bricks.update({
+        'SMTP_HOST': SMTP_HOST,
+        'SMTP_PORT': SMTP_PORT,
+        'SMTP_USER': SMTP_USERNAME,
+        'SMTP_PASSWORD': SMTP_PASSWORD,
+        'MAIL_FROM': SMTP_USERNAME if '@' in (SMTP_USERNAME or '') else f'noreply@{host}',
+        'SMTP_SECURE_ENABLED': SMTP_ENCRYPTION,
+    })
 agent.write_envfile("bricks.env", bricks)
 # just before starting systemd unit
 #agent.dump_env()
