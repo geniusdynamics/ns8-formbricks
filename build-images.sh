@@ -18,7 +18,8 @@ reponame="formbricks"
 # renovate: datasource=npm packageName=corepack
 corepack_version=0.36.0
 
-APP_VERSION="v3.15.0"
+# renovate: datasource=docker packageName=ghcr.io/formbricks/formbricks
+APP_VERSION=v3.15.0
 
 # Create a new empty container image
 container=$(buildah from scratch)
@@ -51,6 +52,7 @@ buildah config --entrypoint=/ \
 	--label="org.nethserver.authorizations=traefik@node:routeadm" \
 	--label="org.nethserver.tcp-ports-demand=1" \
 	--label="org.nethserver.rootfull=0" \
+    --label="org.nethserver.min-core=3.0.0" \
 	--label="org.nethserver.images=docker.io/pgvector/pgvector:pg17 ghcr.io/formbricks/formbricks:${APP_VERSION} docker.io/library/redis:7.4.12" \
 	"${container}"
 
